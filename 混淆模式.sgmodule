@@ -1,0 +1,5 @@
+[MITM]
+# 开启混淆模式
+hostname = *
+obfuscation = true
+# 描述：混淆模式，暗线上网
