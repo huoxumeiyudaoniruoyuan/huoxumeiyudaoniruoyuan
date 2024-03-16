@@ -1,0 +1,6 @@
+[MITM]
+hostname = mesu.apple.com
+
+[URL Rewrite]
+^https:\/\/mesu\.apple\.com\/assets\/.*$ reject
+^https:\/\/mesu\.apple\.com\/.*\/app.*$ reject
