@@ -1,0 +1,28 @@
+# 直连国内域名和IP段
+DOMAIN-SUFFIX,qq.com,Proxy
+DOMAIN-SUFFIX,tencent.com,Proxy
+DOMAIN-SUFFIX,baidu.com,Proxy
+IP-CIDR,203.0.113.0/24,Proxy
+
+# 使用加密的DNS解析服务
+DOMAIN-SUFFIX,*,dns-over-https
+
+# 拒绝访问国外局域网IP
+DIRECT,10.0.0.0/8
+DIRECT,172.16.0.0/12
+DIRECT,192.168.0.0/16
+DIRECT,127.0.0.0/8
+DIRECT,100.64.0.0/10
+DIRECT,169.254.0.0/16
+
+# 拒绝连接不受信任的IP段（示例中仅列举了几个常见的私有IP段）
+DIRECT,224.0.0.0/4
+DIRECT,240.0.0.0/4
+
+# 强制HTTPS访问
+RULE-SET,force-https
+
+# 拒绝不必要的DNS请求
+DOMAIN-SUFFIX,adtracker.*,REJECT
+DOMAIN-SUFFIX,adnetwork.*,REJECT
+DOMAIN-SUFFIX,tracking.*,REJECT
