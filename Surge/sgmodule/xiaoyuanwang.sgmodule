@@ -1,0 +1,11 @@
+[MITM]
+hostname = portal.ikuai8-wifi.com
+
+[Script]
+http-request ^https:\/\/portal\.ikuai8-wifi\.com\/templates\/custom\/end\.html\?username=(.*)&mac=(.*)&status=(.*)&errmsg=(.*)&refer=(.*)&password=(.*)&action=(.*)&type=(.*)&res=(.*)&timestamp=(.*) script-path=https://raw.githubusercontent.com/chavyleung/scripts/master/ikuai.js,requires-body=true
+
+[MITM]
+hostname = *.ikuai8-wifi.com
+
+[Proxy]
+# 添加你的代理配置
