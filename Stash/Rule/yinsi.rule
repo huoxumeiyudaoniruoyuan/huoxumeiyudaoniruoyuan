@@ -1,0 +1,20 @@
+# 隐私保护分流规则
+tcp.request {
+  tls.handshake
+}
+
+tcp.response {
+  content match "HTTP/1.1 200 OK" {
+    apply {
+      split {
+        ratio 3:7
+        header "X-Privacy-Mode" value("enabled") {
+          forward to "private_node"
+        }
+        random {
+          forward to "public_node"
+        }
+      }
+    }
+  }
+}
