@@ -1,0 +1,8 @@
+# 直连国内域名和IP段
+DOMAIN-SUFFIX,qq.com,Proxy
+DOMAIN-SUFFIX,tencent.com,Proxy
+DOMAIN-SUFFIX,baidu.com,Proxy
+IP-CIDR,203.0.113.0/24,Proxy
+
+# 使用Cloudflare DNS解析其余域名
+DOMAIN-SUFFIX,*,dns-forwarder
