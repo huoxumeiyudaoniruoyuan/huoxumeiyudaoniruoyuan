@@ -1,0 +1,11 @@
+# 直连规则
+DOMAIN-SUFFIX,example.com,DIRECT
+DOMAIN-KEYWORD,example,DIRECT
+IP-CIDR,192.168.1.0/24,DIRECT
+GEOIP,CN,DIRECT
+
+# 内容加密规则
+PROCESS-SCRIPT=content_encrypt.js,PROXY
+
+# 其他流量走代理
+FINAL,Proxy
