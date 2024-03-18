@@ -54,7 +54,6 @@ HoYoLAB = url-test, 美国🇺🇸, 新加坡🇸🇬, 日本🇯🇵, 韩国�
 emby = url-test, policy-path=https://api.acaisbest.shop/api/v1/client/subscribe?token=f9934bacba22c1ee7c91807107ce27d9, update-interval=0, no-alert=0, hidden=0, include-all-proxies=0
 Emby = url-test, 美国🇺🇸, 新加坡🇸🇬, 日本🇯🇵, 韩国🇰🇷, 台湾, 香港🇭🇰, no-alert=1, hidden=0, include-all-proxies=0
 yun = url-test, policy-path=https://sub5.yunanyun.xyz/api/v1/client/subscribe?token=a561ca9f878dbcad5389367dd22cbc4d, update-interval=0, no-alert=1, hidden=1, include-all-proxies=0
-优化升级 = true
 
 [Rule]
 DOMAIN-SET,https://raw.githubusercontent.com/huoxumeiyudaoniruoyuan/huoxumeiyudaoniruoyuan/main/Surge/Rule/weixin.list,DIRECT // 微信
