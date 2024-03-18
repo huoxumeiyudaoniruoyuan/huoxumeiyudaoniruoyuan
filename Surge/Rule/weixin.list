@@ -1,0 +1,11 @@
+[Rule]
+# 微信相关域名直连
+DOMAIN-SUFFIX,wechat.com,DIRECT
+DOMAIN-SUFFIX,weixin.com,DIRECT
+DOMAIN-SUFFIX,wx.qq.com,DIRECT
+DOMAIN-SUFFIX,wximg.qq.com,DIRECT
+# 微信支付相关域名直连
+DOMAIN-SUFFIX,tenpay.com,DIRECT
+DOMAIN-SUFFIX,qq.com,DIRECT
+# 微信广告域名拒绝连接
+DOMAIN-SUFFIX,mmstat.com,REJECT
