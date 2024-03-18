@@ -1,0 +1,9 @@
+# 分流至动态CDN节点
+DOMAIN-SUFFIX,example.com,DIRECT
+DOMAIN-KEYWORD,example,DIRECT
+DOMAIN-KEYWORD,example,DIRECT
+
+# 其他流量走代理
+DOMAIN-KEYWORD,example,Proxy
+DOMAIN-SUFFIX,example.net,Proxy
+DOMAIN,example.org,Proxy
