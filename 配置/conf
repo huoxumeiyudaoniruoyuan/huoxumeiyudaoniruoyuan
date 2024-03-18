@@ -122,7 +122,6 @@ RULE-SET,https://github.com/Blankwonder/surge-list/raw/master/apple.list,Proxy
 RULE-SET,LAN,DIRECT
 GEOIP,CN,DIRECT
 FINAL,Proxy,dns-failed
-使它能完全发挥，加入内容加密
 
 [Host]
 me.net = localhost
