@@ -1,0 +1,25 @@
+module "game-anti-region-lock"
+
+import "ip-geo"
+import "url-rewrite"
+
+rule (
+  # 匹配国际服游戏服务器的域名
+  domain = (
+    "game.com",
+    "*.game.com",
+  )
+) {
+  # 获取IP地址的地理位置信息
+  ip-geo,
+
+  # 如果IP地址位于中国大陆，则重写URL
+  geoip.country == "CN" {
+    url-rewrite = (
+      # 将URL中的`region`参数设置为`cn`
+      "region=cn",
+    )
+  }
+}
+
+export "game-anti-region-lock"
