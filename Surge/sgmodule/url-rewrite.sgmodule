@@ -1,0 +1,14 @@
+# 使用`url-rewrite`模块重写URL
+
+module "url-rewrite"
+
+rule (
+  # 匹配所有请求
+  domain = "*"
+) {
+  # 重写URL
+  url-rewrite = (
+    # 将URL中的`region`参数设置为`cn`
+    "region=cn",
+  )
+}
