@@ -1,8 +1,20 @@
-module "game-anti-region-lock"
+# 模块名称
+module "game-split"
 
+# 模块版本
+version = "1.0"
+
+# 模块作者
+author = "Bard"
+
+# 模块描述
+description = "国际服游戏分流"
+
+# 模块依赖
 import "ip-geo"
 import "url-rewrite"
 
+# 模块代码
 rule (
   # 匹配国际服游戏服务器的域名
   domain = (
@@ -13,13 +25,24 @@ rule (
   # 获取IP地址的地理位置信息
   ip-geo,
 
-  # 如果IP地址位于中国大陆，则重写URL
+  # 如果IP地址位于中国大陆，则使用中国服线路
   geoip.country == "CN" {
+    # 使用中国服线路
     url-rewrite = (
       # 将URL中的`region`参数设置为`cn`
       "region=cn",
     )
   }
+
+  # 如果IP地址不在中国大陆，则使用国际服线路
+  geoip.country != "CN" {
+    # 使用国际服线路
+    url-rewrite = (
+      # 将URL中的`region`参数设置为`en`
+      "region=en",
+    )
+  }
 }
 
-export "game-anti-region-lock"
+# 导出模块
+export "game-split"
