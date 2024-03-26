@@ -1,0 +1,41 @@
+[Rule]
+# 将所有来自中国大陆的流量分流到代理服务器
+name = "中国大陆"
+condition = (ip_country_code == CN)
+action = proxy = "DIRECT"
+
+[Rule]
+# 将所有来自美国以外的流量分流到代理服务器
+name = "美国以外"
+condition = (ip_country_code != US)
+action = proxy = "DIRECT"
+
+[Rule]
+# 将所有对特定域名的流量分流到代理服务器
+name = "Google"
+condition = (domain == "www.google.com")
+action = proxy = "DIRECT"
+
+[Rule]
+# 将所有对特定应用程序的流量分流到代理服务器
+name = "WeChat"
+condition = (app == "WeChat")
+action = proxy = "DIRECT"
+
+[Proxy]
+# 配置代理服务器
+name = "DIRECT"
+type = "direct"
+
+[Proxy]
+# 配置代理服务器
+name = "Proxy"
+type = "ss"
+server = "127.0.0.1"
+port = 1080
+password = "password"
+
+[Profile]
+# 配置默认代理
+name = "Default"
+proxy = "Proxy"
