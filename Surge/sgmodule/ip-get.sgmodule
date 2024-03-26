@@ -1,0 +1,16 @@
+# 使用`ip-geo`模块获取IP地址的地理位置信息
+
+module "ip-geo"
+
+rule (
+  # 匹配所有请求
+  domain = "*"
+) {
+  # 获取IP地址的地理位置信息
+  ip-geo,
+
+  # 输出IP地址的地理位置信息
+  log("IP地址的地理位置信息：{{geoip}}")
+}
+
+export "ip-geo"
