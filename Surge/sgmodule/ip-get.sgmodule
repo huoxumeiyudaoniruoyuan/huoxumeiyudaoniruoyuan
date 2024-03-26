@@ -1,7 +1,19 @@
-# 使用`ip-geo`模块获取IP地址的地理位置信息
-
+# 模块名称
 module "ip-geo"
 
+# 模块版本
+version = "1.0"
+
+# 模块作者
+author = "Bard"
+
+# 模块描述
+description = "获取IP地址的地理位置信息"
+
+# 模块依赖
+import "ip-geo"
+
+# 模块代码
 rule (
   # 匹配所有请求
   domain = "*"
@@ -13,4 +25,5 @@ rule (
   log("IP地址的地理位置信息：{{geoip}}")
 }
 
+# 导出模块
 export "ip-geo"
