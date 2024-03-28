@@ -1,0 +1,77 @@
+# 模块名称
+module "global-game-anti-region-lock"
+
+# 模块版本
+version = "1.2"
+
+# 模块作者
+author = "Bard"
+
+# 模块描述
+description = "国际服游戏防地区识别，优化完善版"
+
+# 模块依赖
+import "ip-geo"
+import "url-rewrite"
+import "log"
+
+# 模块配置
+const (
+  # 游戏域名列表
+  game_domains = [
+    "game.com",
+    "*.game.com",
+    "game2.com",
+    "*.game2.com",
+  ]
+
+  # 默认线路
+  default_region = "default"
+
+  # 中国服线路
+  cn_region = "cn"
+
+  # 国际服线路
+  en_region = "en"
+)
+
+# 模块代码
+rule (
+  # 匹配游戏域名
+  domain = game_domains
+) {
+  # 获取 IP 地址的地理位置信息
+  ip_info = ip-geo
+
+  # 记录用户访问的游戏服务器信息
+  log.debug("User accessed game server: " + domain)
+
+  # 处理获取地理位置信息失败的情况
+  if ip_info.geoip.country == null {
+    # 记录获取地理位置信息失败的日志
+    log.error("Failed to get geo location information.")
+    # 使用默认线路
+    url-rewrite = (
+      "region=" + default_region,
+    )
+  } else {
+    # 根据 IP 地址所在的国家/地区选择线路
+    switch ip_info.geoip.country {
+      case "CN":
+        # 用户位于中国大陆，使用中国服线路
+        log.debug("User is in China.")
+        url-rewrite = (
+          "region=" + cn_region,
+        )
+      default:
+        # 用户位于中国大陆以外，使用国际服线路
+        log.debug("User is outside China.")
+        url-rewrite = (
+          "region=" + en_region,
+        )
+    }
+  }
+}
+
+# 导出模块
+export "global-game-anti-region-lock"
