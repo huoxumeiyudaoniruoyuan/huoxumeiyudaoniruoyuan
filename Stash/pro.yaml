@@ -1,0 +1,36 @@
+[TCP]
+ROUTER_BYPASS_SYSTEM = 1
+NO_DELAY = 1
+
+[MITM]
+SKIP_SERVER_CERT_VERIFY = 1
+CONNECT_INTERCEPT = navi.youku.com
+
+[PROXY]
+PROXY = HTTP, 192.168.1.7, 8080, USER=username, PASSWORD=password
+
+[DNS]
+DNS_LOCAL_SERVER = 114.114.114.114, 223.5.5.5
+DNS_POLICY = MILIKURI
+
+[SSID_SUSPENDED_LIST]
+
+[RULE]
+PROCESS_NAME,stcamerademo,DIRECT
+PROCESS_NAME,gauRTISystem,DIRECT
+
+URL-REGEX,^https?://api\d+\.calm\.sxmapp\.com/,DIRECT
+URL-REGEX,^https?:/\/router-gateway\Firenet\.blizzard\.com,DIRECT
+DEST-DOMAIN-SUFFIX,battle.net,DIRECT
+DEST-DOMAIN-SUFFIX,blizzard.com,DIRECT
+
+DOMAIN-SUFFIX,laikanshu.com,PROXY
+DOMAIN-SUFFIX,safervpn.live,PROXY
+
+FINAL,PROXY
+
+[URL-REWRITE]
+^http:// https:// header
+
+[MITM]
+HOSTNAME = *.milik.uri,*.blizzard.com,*.battle.net
