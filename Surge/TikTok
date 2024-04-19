@@ -1,0 +1,17 @@
+[Rule]
+# TikTok解锁规则
+PROCESS-NAME,com.zhiliaoapp.musically,DIRECT
+DOMAIN-SUFFIX,snsseedcdn.com,DIRECT
+DOMAIN-SUFFIX,toutiaocloud.com,DIRECT
+DOMAIN-SUFFIX,ibytedtos.com,DIRECT
+DOMAIN-KEYWORD,musically,DIRECT
+DOMAIN-KEYWORD,ixigua,DIRECT
+
+[URL Rewrite]
+# TikTok区域解锁
+(?<=&mcc_mnc=)4 2 307
+(?<=_region=)CN(?=&) US 307
+(^https?:\/\/*\.\w{4}okv.com\/.+&.+)(\d{2}\.3\.\d)(.+) $118.0$3 302
+
+[MITM]
+hostname = *.tiktokv.com, *.byteoversea.com, *.tik-tokapi.com
