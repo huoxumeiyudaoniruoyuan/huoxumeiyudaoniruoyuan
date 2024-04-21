@@ -1,0 +1,169 @@
+# Stash 配置文件
+
+mixed-port: 7890 # Mixed端口,用于接收mixin模式和vpn模式的连接请求
+
+# 代理模式配置
+proxy-servers:
+  - name: 🇭🇰 香港节点
+    type: vmess
+    server: server1.com
+    port: 443
+    uuid: uuid1
+    cipher: auto
+    tls: true
+    skip-cert-verify: true
+    network: ws
+    ws-path: /path1
+
+  - name: 🇺🇸 美国节点 
+    type: vmess
+    server: server2.com   
+    port: 443
+    uuid: uuid2
+    cipher: auto
+    tls: true
+    skip-cert-verify: true 
+    network: ws
+    ws-path: /path2
+
+# 代理组策略
+proxy-groups:
+  - name: PROXY
+    type: load-balance
+    proxies:
+      - 🇭🇰 香港节点
+      - 🇺🇸 美国节点
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+
+# 域名解析
+dns:
+  # 防污染DNS
+  doh-servers:
+    - https://dns.adguard.com/dns-query
+  # 防DNS泄漏
+  doh-default-servers:
+    - https://dns.adguard.com/dns-query
+  # 劫持所有DNS  
+  hijack-dns-servers:
+    - 8.8.8.8:53
+    - 1.1.1.1:853
+
+# 内容加密
+tcp-emulators:
+  - kcpsession
+  - dpkgheader
+  - kcpsession-ipv6
+  - dpkgheader-ipv6
+
+# 规则文件
+rule-providers:
+  Reject:
+    type: http
+    behavior: domain
+    url: https://ruleset-ipcidrx.site/reject.yaml
+    path: ./ruleset/reject.yaml
+  AdvertisingLite:
+    type: http
+    behavior: domain
+    url: https://ruleset-ipcidrx.site/advertising-lite.yaml
+    path: ./ruleset/ads.yaml
+  Netflix:
+    type: http
+    behavior: domain
+    url: https://ruleset-ipcidrx.site/netflix.yaml
+    path: ./ruleset/stream.yaml        
+  China:
+    type: http
+    behavior: domain
+    url: https://ruleset-ipcidrx.site/china.yaml
+    path: ./ruleset/china.yaml
+  Domestic:
+    type: http
+    behavior: domain
+    url: https://ruleset-ipcidrx.site/domestic.yaml
+    path: ./ruleset/domestic.yaml    
+
+# 内核模式
+kernel-sockets: enable
+
+# TUN设置
+tun:
+  enable: true 
+  stack: system
+  routing: separating
+  route:
+    - 192.168.0.0/16
+    - 10.0.0.0/8
+    - 172.16.0.0/12 
+  dns-fallback: 4096
+  allowed-icmp-types: []
+  interface-name: utun10
+  interface-metadata: 0
+
+# DNS直连
+dns-forwarding:
+  lan:
+    enabled: true
+    listen: 7981
+
+# 透明代理模式配置
+tcp-mux-transparent-proxy:
+  enabled: true
+  ipv6: false
+  masquerade: 192.168.1.1
+  packet-encoding: smcmux
+
+  # NTA穿透
+  nata-tcp-mux:
+    enabled: true 
+    server-addr: 3.3.3.3
+    extra-opts: []
+
+# 其他设置
+mixed-port-transparent-proxy: true # MixedPort透明代理模式
+inbound-settings: {} # UPD NAT mixin模式
+outbound-settings: {}
+
+mtu-shift: -28 # 针对MTU优化  
+tcp-fast-open: true
+vpn-type: meta-enhanced
+
+tproxy-ipv6: false
+tproxy-mark: 0x28 
+router-mark: 0x6666
+
+hijack-route:
+  - tcp://0.0.0.0:7981 
+  - udp://0.0.0.0:7981
+
+hijack-dns:
+  # DNS修正规则
+  hijack-host:
+    - ip.mesu.apple.com, 192.168.1.1
+
+  # 游戏/视频增强设置
+  tunouv: true
+  tunaev: https://mqcdn.msf.qunarzz.com/mqfile/game/core.2.0.22.0.js 
+  
+  #隐藏设备信息
+  iface-name: rmnet0  
+  iface-httplaceholder: "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.79 Safari/537.36"
+
+# 规则应用
+dns-policy: 
+  cellular: DIRECT   
+  wifi: DIRECT
+
+proxy-policy:
+  cellular: PROXY
+  wifi: PROXY 
+
+bypass-policy: {}
+fallback-policy:
+  cellular: PROXY
+  wifi: PROXY
+  
+resouce-policy:
+  direct: China,Domestic,Reject
+  proxy: Netflix
