@@ -1,0 +1,6 @@
+#!name=我的Surge模块
+#!desc=我的Surge模块说明
+#!system=ios
+
+[Script]
+我的脚本 = type=generic,timeout=5,script-path=script.js
