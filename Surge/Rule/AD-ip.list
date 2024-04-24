@@ -8,7 +8,7 @@ ip-country-cn {
 }
 
 log {
-  format = "${ip-country-cn.country_name} (${ip-country-cn.country_code_iso}) - ${ip-country-cn.city_name} - ${remote_addr}"
+  format = "${proxy_ip} - ${remote_addr}"
   level = INFO
 }
 
