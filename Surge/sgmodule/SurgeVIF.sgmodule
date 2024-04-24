@@ -1,6 +1,6 @@
-#!name=我的Surge模块
-#!desc=我的Surge模块说明
+#!name=Surge VIF
+#!desc=用于ios的Surge的系统接管
 #!system=ios
 
 [Script]
-我的脚本 = type=generic,timeout=5,script-path=script.js
+我的脚本 = type=generic,timeout=5,script-path=https://example.com/script.js
