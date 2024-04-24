@@ -3,4 +3,4 @@
 #!system=ios
 
 [Script]
-我的脚本 = type=generic,timeout=5,script-path=https://example.com/script.js
+ Surge VIF = type=generic,timeout=5,script-path=https://example.com/script.js
