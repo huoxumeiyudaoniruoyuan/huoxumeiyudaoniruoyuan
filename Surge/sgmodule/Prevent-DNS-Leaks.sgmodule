@@ -1,16 +1,32 @@
-#!name=Prevent DNS Leaks
-#!desc=This module prevents DNS leaks by enforcing DNS resolution through the proxy.
+#!name=Prevent DNS Leaks with MITM
+#!desc=This module prevents DNS leaks and supports MITM for HTTPS traffic.
 #!system=ios,macos
 
-[Script]
-# This script ensures that DNS queries go through the proxy to prevent leaks.
-Prevent-DNS-Leak = type=http-request, script-path=https://ghp.ci/https://raw.githubusercontent.com/huoxumeiyudaoniruoyuan/huoxumeiyudaoniruoyuan/main/Surge/Js/prevent-DNS.js, timeout=5, argument=source=Surge
-
 [General]
-# Force all DNS queries to use the proxy's DNS
+# Set custom DNS servers to use, enforcing DNS resolution through the proxy
 dns-server = 8.8.8.8, 8.8.4.4
+# Force all IP lookups to go through the proxy
 always-real-ip = true
 
+[MITM]
+# Enable MITM for HTTPS traffic
+enable = true
+# Use your custom certificate
+ca-pem = /path/to/your/ca.pem
+# Domains to be included in the MITM
+hostname = *
+
+[Script]
+# This script helps to prevent DNS leaks by verifying DNS requests go through the proxy.
+Prevent-DNS-Leak = type=http-request, script-path=https://ghp.ci/https://raw.githubusercontent.com/huoxumeiyudaoniruoyuan/huoxumeiyudaoniruoyuan/main/Surge/Js/prevent-DNS.js, timeout=5
+
 [Rule]
-# Ensure all DNS requests go through the proxy
+# Route all DNS queries to go through the proxy to prevent leaks
+DOMAIN-SUFFIX,dns.google,PROXY
+DOMAIN-SUFFIX,google.com,PROXY
+IP-CIDR, 8.8.8.0/24, PROXY, no-resolve
+IP-CIDR, 8.8.4.0/24, PROXY, no-resolve
 IP-CIDR, 0.0.0.0/0, PROXY, no-resolve
+
+# General rule to proxy all traffic
+FINAL, PROXY
