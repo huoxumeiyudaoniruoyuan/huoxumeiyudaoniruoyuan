@@ -3,8 +3,7 @@
 #!system=ios
 
 [General]
-dns-server = system, 1.1.1.1, 1.0.0.1, 8.8.8.8, tls://dns.google, https://doh.cloudflare.com/dns-query
-force-http-engine-hosts = *
+# dns-server 参数已删除，保留默认设置
 
 [MITM]
 hostname = *.*.*, !*.apple.com, !*.cloudflare.com, !*.google.com
@@ -12,8 +11,3 @@ hostname = *.*.*, !*.apple.com, !*.cloudflare.com, !*.google.com
 [Script]
 # 使用自定义的 Anti-DNS 脚本来处理 DNS 请求
 Anti-DNS = type=dns,script-path=https://ghp.ci/https://raw.githubusercontent.com/huoxumeiyudaoniruoyuan/huoxumeiyudaoniruoyuan/main/Surge/Js/Anti-DNS.js,timeout=10
-
-[Rule]
-# 将特定的 DNS 请求强制通过代理处理
-IP-CIDR, 1.1.1.1/32, PROXY
-IP-CIDR, 8.8.8.8/32, PROXY
