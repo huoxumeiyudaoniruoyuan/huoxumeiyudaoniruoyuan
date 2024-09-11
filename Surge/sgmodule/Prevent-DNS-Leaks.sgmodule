@@ -1,0 +1,16 @@
+#!name=Prevent DNS Leaks
+#!desc=This module prevents DNS leaks by enforcing DNS resolution through the proxy.
+#!system=ios,macos
+
+[Script]
+# This script ensures that DNS queries go through the proxy to prevent leaks.
+Prevent-DNS-Leak = type=http-request, script-path=https://ghp.ci/https://raw.githubusercontent.com/huoxumeiyudaoniruoyuan/huoxumeiyudaoniruoyuan/main/Surge/Js/prevent-DNS.js, timeout=5, argument=source=Surge
+
+[General]
+# Force all DNS queries to use the proxy's DNS
+dns-server = 8.8.8.8, 8.8.4.4
+always-real-ip = true
+
+[Rule]
+# Ensure all DNS requests go through the proxy
+IP-CIDR, 0.0.0.0/0, PROXY, no-resolve
