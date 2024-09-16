@@ -1,21 +1,29 @@
-#!name=增强型防DNS污染
-#!desc=使用多重策略防止DNS污染
+#!name = 增强型防DNS污染
+#!desc = 使用多重策略防止DNS污染
 
 [General]
-dns-server = system, 8.8.8.8, 1.1.1.1
+dns-server = 8.8.8.8, 1.1.1.1
 doh-server = https://dns.google/dns-query, https://cloudflare-dns.com/dns-query
 always-real-ip = *.lan, cable.auth.com, *.msftconnecttest.com, *.msftncsi.com, network-test.debian.org, detectportal.firefox.com, resolver1.opendns.com, *.srv.nintendo.net, *.stun.playstation.net, xbox.*.microsoft.com, *.xboxlive.com, stun.*, global.turn.twilio.com, global.stun.twilio.com
 fake-ip-filter = *.lan, cable.auth.com, *.msftconnecttest.com, *.msftncsi.com, network-test.debian.org, detectportal.firefox.com, resolver1.opendns.com, *.srv.nintendo.net, *.stun.playstation.net, xbox.*.microsoft.com, *.xboxlive.com, stun.*, global.turn.twilio.com, global.stun.twilio.com
 
 [Host]
-# 这里可以添加自定义的域名解析
+# 自定义域名解析，可根据需要手动添加
 # example.com = 8.8.8.8
+
+[Policy]
+# 定义代理策略
+PROXY = select, CustomProxy, Direct
+
+[Proxy]
+# 定义代理服务器
+CustomProxy = http, proxy.example.com, 8080, username, password
 
 [Rule]
 # 允许本地域名解析
 DOMAIN-SUFFIX,local,DIRECT
 
-# 防止常见的DNS污染
+# 防止常见的DNS污染，通过代理访问
 DOMAIN-KEYWORD,google,PROXY
 DOMAIN-KEYWORD,facebook,PROXY
 DOMAIN-KEYWORD,youtube,PROXY
@@ -26,7 +34,7 @@ DOMAIN-SUFFIX,gstatic.com,PROXY
 DOMAIN-SUFFIX,googleapis.com,PROXY
 DOMAIN-SUFFIX,googleusercontent.com,PROXY
 
-# 允许加密DNS
+# 允许加密DNS通过代理
 DOMAIN,dns.google,PROXY
 DOMAIN,cloudflare-dns.com,PROXY
 
@@ -35,7 +43,7 @@ AND,((PROTOCOL,UDP),(DEST-PORT,53)),REJECT-NO-DROP
 AND,((PROTOCOL,TCP),(DEST-PORT,53)),REJECT-NO-DROP
 
 [URL Rewrite]
-# 一些URL重写规则，可以帮助绕过DNS污染
+# 绕过DNS污染的URL重写规则
 ^http://www\.google\.cn http://www.google.com 302
 
 [MITM]
