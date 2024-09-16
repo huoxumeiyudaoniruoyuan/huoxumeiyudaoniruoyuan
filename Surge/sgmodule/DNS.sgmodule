@@ -1,0 +1,25 @@
+#!name=DNS配置 (Google & Cloudflare)
+#!desc=使用 Google 和 Cloudflare DNS 并防止 DNS 泄漏
+
+[General]
+dns-server = 8.8.8.8, 1.1.1.1
+doh-server = https://dns.google/dns-query, https://cloudflare-dns.com/dns-query
+always-real-ip = *.lan, cable.auth.com, *.msftconnecttest.com, *.msftncsi.com, network-test.debian.org, detectportal.firefox.com, resolver1.opendns.com
+encrypted-dns-follow-outbound-mode = true
+
+[Rule]
+# 拦截常规 DNS 查询
+AND,((PROTOCOL,UDP),(DEST-PORT,53)),REJECT-NO-DROP
+AND,((PROTOCOL,TCP),(DEST-PORT,53)),REJECT-NO-DROP
+
+# 允许加密 DNS 查询
+DOMAIN,dns.google,DIRECT
+DOMAIN,cloudflare-dns.com,DIRECT
+
+# 可选：如果你想使用 DOH，取消下面这行的注释
+# PROTOCOL,DOH,DIRECT
+
+[Host]
+# 这里可以添加本地网络的自定义域名解析
+# 例如：
+# router.lan = 192.168.1.1
