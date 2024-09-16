@@ -1,5 +1,5 @@
-#!name=防DNS泄漏（允许更新）
-#!desc=防止DNS泄漏，同时允许Surge更新外部资源
+#!name=防DNS泄漏（允许更新，优化版）
+#!desc=防止DNS泄漏，同时允许Surge更新外部资源，并提供更灵活的配置
 
 [General]
 dns-server = 8.8.8.8, 1.1.1.1
@@ -13,6 +13,26 @@ always-real-ip = *.srv.nintendo.net, *.stun.playstation.net, xbox.*.microsoft.co
 # 允许 Surge 相关域名直连，确保可以更新外部资源
 DOMAIN-SUFFIX,nssurge.com,DIRECT
 
-# 仅拦截非 Surge 的常规 DNS 查询
-AND,((PROTOCOL,UDP),(DEST-PORT,53),(NOT,((DST-IP,8.8.8.8))),((NOT,((DST-IP,1.1.1.1))))),REJECT-NO-DROP
-AND,((PROTOCOL,TCP),(DEST-PORT,53),(NOT,((DST-IP,8.8.8.8))),((NOT,((DST-IP,1.1.1.1))))),REJECT-NO-DROP
+# 拦截广告域名（示例）
+DOMAIN-SUFFIX,ad.doubleclick.net,REJECT
+DOMAIN-SUFFIX,ads.google.com,REJECT
+
+# 拦截已知的跟踪域名（示例）
+DOMAIN-SUFFIX,*.google-analytics.com,REJECT
+DOMAIN-SUFFIX,*.facebook.com,REJECT
+
+# 自定义加速规则（示例）
+# 加速国内视频网站
+DOMAIN-SUFFIX,*.iqiyi.com,POLICY,iqiyi
+POLICY,iqiyi,Proxy
+
+# 自定义策略组（示例）
+PROXY,iqiyi,http://127.0.0.1:1080
+
+# 拦截除允许域名外的其他DNS请求
+# 这里可以根据需要调整允许的域名列表
+DOMAIN,8.8.8.8,DIRECT
+DOMAIN,1.1.1.1,DIRECT
+DOMAIN,nssurge.com,DIRECT
+# 添加其他允许的域名
+ANY,REJECT
