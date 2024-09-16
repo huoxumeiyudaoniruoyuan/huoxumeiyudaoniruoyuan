@@ -1,0 +1,42 @@
+#!name=增强型防DNS污染
+#!desc=使用多重策略防止DNS污染
+
+[General]
+dns-server = system, 8.8.8.8, 1.1.1.1
+doh-server = https://dns.google/dns-query, https://cloudflare-dns.com/dns-query
+always-real-ip = *.lan, cable.auth.com, *.msftconnecttest.com, *.msftncsi.com, network-test.debian.org, detectportal.firefox.com, resolver1.opendns.com, *.srv.nintendo.net, *.stun.playstation.net, xbox.*.microsoft.com, *.xboxlive.com, stun.*, global.turn.twilio.com, global.stun.twilio.com
+fake-ip-filter = *.lan, cable.auth.com, *.msftconnecttest.com, *.msftncsi.com, network-test.debian.org, detectportal.firefox.com, resolver1.opendns.com, *.srv.nintendo.net, *.stun.playstation.net, xbox.*.microsoft.com, *.xboxlive.com, stun.*, global.turn.twilio.com, global.stun.twilio.com
+
+[Host]
+# 这里可以添加自定义的域名解析
+# example.com = 8.8.8.8
+
+[Rule]
+# 允许本地域名解析
+DOMAIN-SUFFIX,local,DIRECT
+
+# 防止常见的DNS污染
+DOMAIN-KEYWORD,google,PROXY
+DOMAIN-KEYWORD,facebook,PROXY
+DOMAIN-KEYWORD,youtube,PROXY
+DOMAIN-KEYWORD,twitter,PROXY
+DOMAIN-KEYWORD,instagram,PROXY
+DOMAIN-KEYWORD,gmail,PROXY
+DOMAIN-SUFFIX,gstatic.com,PROXY
+DOMAIN-SUFFIX,googleapis.com,PROXY
+DOMAIN-SUFFIX,googleusercontent.com,PROXY
+
+# 允许加密DNS
+DOMAIN,dns.google,PROXY
+DOMAIN,cloudflare-dns.com,PROXY
+
+# 拦截非加密DNS查询，防止DNS污染
+AND,((PROTOCOL,UDP),(DEST-PORT,53)),REJECT-NO-DROP
+AND,((PROTOCOL,TCP),(DEST-PORT,53)),REJECT-NO-DROP
+
+[URL Rewrite]
+# 一些URL重写规则，可以帮助绕过DNS污染
+^http://www\.google\.cn http://www.google.com 302
+
+[MITM]
+hostname = *.google.cn, *.googlevideo.com
