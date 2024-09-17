@@ -1,38 +1,27 @@
-#!name=防DNS泄漏（允许更新，优化版）
-#!desc=防止DNS泄漏，同时允许Surge更新外部资源，并提供更灵活的配置
+#!name=DNS Leak Prevention
+#!desc=This module prevents DNS leaks by enforcing the use of encrypted DNS and blocking insecure DNS queries.
 
 [General]
-dns-server = 8.8.8.8, 1.1.1.1
-always-real-ip = *.srv.nintendo.net, *.stun.playstation.net, xbox.*.microsoft.com, *.xboxlive.com, stun.*, global.turn.twilio.com, global.stun.twilio.com, localhost.*.qq.com, localhost.*.weixin.qq.com, *.logon.battlenet.com.cn, *.logon.battle.net, *.blzstatic.cn
+# Force DNS over HTTPS (DoH)
+doh-server = https://dns.google/dns-query
+
+# Optional: You can also use DNS over TLS (DoT) instead of DoH
+# tls-server = 8.8.8.8, 1.1.1.1
+
+# Prevent local DNS resolution to avoid leaks
+skip-proxy = 192.168.0.0/16, 10.0.0.0/8, 172.16.0.0/12
 
 [Host]
-# 在这里可以添加本地网络的自定义域名解析
-# 例如：router.lan = 192.168.1.1
+# Force specific domains to resolve using encrypted DNS
+# This will prevent DNS leaks from these hosts
+force-dns-engine-hosts = *.google.com, *.facebook.com
 
 [Rule]
-# 允许 Surge 相关域名直连，确保可以更新外部资源
-DOMAIN-SUFFIX,nssurge.com,DIRECT
+# Reject all non-proxy DNS requests
+IP-CIDR, 8.8.8.8/32, REJECT
+IP-CIDR, 1.1.1.1/32, REJECT
+IP-CIDR6, 2001:4860:4860::8888/128, REJECT
 
-# 拦截广告域名（示例）
-DOMAIN-SUFFIX,ad.doubleclick.net,REJECT
-DOMAIN-SUFFIX,ads.google.com,REJECT
-
-# 拦截已知的跟踪域名（示例）
-DOMAIN-SUFFIX,*.google-analytics.com,REJECT
-DOMAIN-SUFFIX,*.facebook.com,REJECT
-
-# 自定义加速规则（示例）
-# 加速国内视频网站
-DOMAIN-SUFFIX,*.iqiyi.com,POLICY,iqiyi
-POLICY,iqiyi,Proxy
-
-# 自定义策略组（示例）
-PROXY,iqiyi,http://127.0.0.1:1080
-
-# 拦截除允许域名外的其他DNS请求
-# 这里可以根据需要调整允许的域名列表
-DOMAIN,8.8.8.8,DIRECT
-DOMAIN,1.1.1.1,DIRECT
-DOMAIN,nssurge.com,DIRECT
-# 添加其他允许的域名
-ANY,REJECT
+# Allow DoH (or DoT) DNS traffic
+DOMAIN-SUFFIX, google.com, DIRECT
+DOMAIN-SUFFIX, cloudflare.com, DIRECT
