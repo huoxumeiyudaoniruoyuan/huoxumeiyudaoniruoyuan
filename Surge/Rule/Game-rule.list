@@ -1,0 +1,28 @@
+#!name = International Game Ruleset
+#!desc = Surge external ruleset for optimizing international game traffic and minimizing latency.
+
+# 游戏流量直连
+DOMAIN-SUFFIX,playstation.net,DIRECT
+DOMAIN-SUFFIX,xboxlive.com,DIRECT
+DOMAIN-SUFFIX,nintendo.com,DIRECT
+DOMAIN-SUFFIX,steampowered.com,DIRECT
+DOMAIN-SUFFIX,epicgames.com,DIRECT
+DOMAIN-SUFFIX,riotgames.com,DIRECT
+DOMAIN-SUFFIX,blizzard.com,DIRECT
+DOMAIN-SUFFIX,ubisoft.com,DIRECT
+DOMAIN-SUFFIX,valve.net,DIRECT
+
+# 基于地理位置的直连，避免延迟（国际服）
+GEOIP,US,DIRECT
+GEOIP,EU,DIRECT
+GEOIP,JP,DIRECT
+GEOIP,KR,DIRECT
+GEOIP,SG,DIRECT
+
+# 拒绝广告和跟踪器
+DOMAIN-SUFFIX,tracking.com,REJECT
+DOMAIN-SUFFIX,adservice.google.com,REJECT
+
+# 本地网络直连
+IP-CIDR,192.168.0.0/16,DIRECT
+IP-CIDR,10.0.0.0/8,DIRECT
