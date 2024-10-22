@@ -1,0 +1,27 @@
+#!name DNS Leak Prevention
+#!desc A Surge module to prevent DNS leaks by routing all DNS queries securely.
+
+[General]
+# Specify secure DNS servers (e.g., Cloudflare DNS)
+dns-server = 1.1.1.1, 1.0.0.1
+
+# Enable DNS over HTTPS (DoH) for encrypted DNS queries
+doh-server = https://cloudflare-dns.com/dns-query
+
+# Block hijacked DNS requests and force real IP resolution
+hijack-dns = false
+always-real-ip = *
+
+[Rule]
+# Reject all private network ranges to prevent internal network DNS queries
+IP-CIDR,192.168.0.0/16,REJECT
+IP-CIDR,10.0.0.0/8,REJECT
+IP-CIDR,172.16.0.0/12,REJECT
+IP-CIDR,127.0.0.0/8,REJECT
+
+# Force DNS queries through DIRECT or REJECT to avoid leaking through local networks
+DOMAIN-SUFFIX,local,REJECT
+DOMAIN-SUFFIX,lan,REJECT
+
+# Allow all other domains to resolve through secure channels (DIRECT)
+DOMAIN-SET,*,DIRECT
