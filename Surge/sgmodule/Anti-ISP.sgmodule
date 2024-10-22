@@ -1,0 +1,34 @@
+#!name Anti ISP Hijacking
+#!desc This module prevents ISP hijacking by blocking known hijacked domains and securing traffic.
+
+[General]
+# Use secure DNS servers to prevent DNS hijacking
+dns-server = 1.1.1.1, 1.0.0.1
+
+# Enable DNS over HTTPS (DoH) to prevent DNS hijacking and ensure encrypted DNS queries
+doh-server = https://cloudflare-dns.com/dns-query
+
+# Prevent DNS hijacking by forcing real IP resolution
+hijack-dns = false
+always-real-ip = *
+
+# Enable HTTPS for all secure traffic to avoid HTTP hijacking
+http-policy = force-https
+
+[Rule]
+# Block known hijacked domains often used by ISPs for redirection
+DOMAIN-SUFFIX,adf.ly,REJECT
+DOMAIN-SUFFIX,msftconnecttest.com,REJECT
+DOMAIN-SUFFIX,360.cn,REJECT
+DOMAIN-SUFFIX,hao123.com,REJECT
+
+# Block unnecessary ISP ads and hijacking pages
+DOMAIN-SUFFIX,isp-ad.com,REJECT
+DOMAIN-SUFFIX,hijackpage.com,REJECT
+
+# Block common ad servers to avoid hijacked advertising traffic
+DOMAIN-SUFFIX,doubleclick.net,REJECT
+DOMAIN-SUFFIX,adsafeprotected.com,REJECT
+
+# Ensure all other domains are accessed securely
+DOMAIN-SET,*,DIRECT
