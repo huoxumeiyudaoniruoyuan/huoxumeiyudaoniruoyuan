@@ -1,14 +1,10 @@
-#!name Cloudflare DoH
-#!desc 使用 Cloudflare 的 DNS-over-HTTPS 服务
-#!system 
+#!name = Cloudflare-DoH
+#!desc = 使用Cloudflare DNS-over-HTTPS (DoH)
 
 [General]
-# 将 DNS 设置为使用 Cloudflare 的 DoH
-dns-server = https://cloudflare-dns.com/dns-query
+dns-server = 1.1.1.1, 1.0.0.1
+encrypted-dns-server = https://cloudflare-dns.com/dns-query
 
-[Rule]
-# 允许所有流量通过 DoH
-DOMAIN-KEYWORD,cloudflare,DIRECT
-DOMAIN-SUFFIX,com,DIRECT
-DOMAIN-SUFFIX,net,DIRECT
-DOMAIN-SUFFIX,org,DIRECT
+[Host]
+example.com = 192.0.2.1
+
