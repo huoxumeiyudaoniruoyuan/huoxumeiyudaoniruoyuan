@@ -1,0 +1,28 @@
+#!name Cloudflare DoH
+#!desc Use Cloudflare DNS over HTTPS to ensure encrypted DNS queries.
+
+[General]
+# Use Cloudflare's DNS-over-HTTPS (DoH) server
+doh-server = https://cloudflare-dns.com/dns-query
+
+# Backup DNS server in case DoH is unavailable
+dns-server = 1.1.1.1, 1.0.0.1
+
+# Block DNS hijacking attempts
+hijack-dns = false
+
+# Force real IP for all domains (helps prevent DNS issues when using DoH)
+always-real-ip = *
+
+# Enable IPv6 if supported
+ipv6 = true
+
+[Rule]
+# Block internal network IP ranges to prevent DNS leaks
+IP-CIDR,192.168.0.0/16,REJECT
+IP-CIDR,10.0.0.0/8,REJECT
+IP-CIDR,172.16.0.0/12,REJECT
+IP-CIDR,127.0.0.0/8,REJECT
+
+# Allow all other domains to be resolved through DoH
+DOMAIN-SET,*,DIRECT
