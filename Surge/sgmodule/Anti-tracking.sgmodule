@@ -1,6 +1,6 @@
-name=防网站指纹跟踪
-desc=防止网站指纹跟踪和用户行为分析
-system=ios
+#!name=防网站指纹跟踪
+#!desc=防止网站指纹跟踪和用户行为分析
+#!system=ios
 
 [General]
 # 启用防跟踪相关设置
