@@ -1,0 +1,111 @@
+name=防网站指纹跟踪
+desc=防止网站指纹跟踪和用户行为分析
+system=ios
+
+[General]
+# 启用防跟踪相关设置
+force-http-engine-hosts = %APPEND% *
+# 隐私保护参数
+always-real-ip = %APPEND% *.lan, cable.auth.com, *.msftconnecttest.com, *.msftncsi.com
+# 防止WebRTC泄露本地IP
+udp-priority = false
+
+[Rule]
+# 拦截常见的跟踪域名
+DOMAIN-SUFFIX,adjust.com,REJECT
+DOMAIN-SUFFIX,airpr.com,REJECT
+DOMAIN-SUFFIX,hotjar.com,REJECT
+DOMAIN-SUFFIX,hotjar.io,REJECT
+DOMAIN-SUFFIX,hs-analytics.net,REJECT
+DOMAIN-SUFFIX,kissmetrics.com,REJECT
+DOMAIN-SUFFIX,kochava.com,REJECT
+DOMAIN-SUFFIX,liadm.com,REJECT
+DOMAIN-SUFFIX,marketo.com,REJECT
+DOMAIN-SUFFIX,mparticle.com,REJECT
+DOMAIN-SUFFIX,nexac.com,REJECT
+DOMAIN-SUFFIX,nr-data.net,REJECT
+DOMAIN-SUFFIX,pardot.com,REJECT
+DOMAIN-SUFFIX,parrable.com,REJECT
+DOMAIN-SUFFIX,petametrics.com,REJECT
+DOMAIN-SUFFIX,predic.io,REJECT
+DOMAIN-SUFFIX,quantcount.com,REJECT
+DOMAIN-SUFFIX,quantserve.com,REJECT
+DOMAIN-SUFFIX,rtbasia.com,REJECT
+DOMAIN-SUFFIX,scorecardresearch.com,REJECT
+DOMAIN-SUFFIX,seewhy.com,REJECT
+DOMAIN-SUFFIX,segment.com,REJECT
+DOMAIN-SUFFIX,segment.io,REJECT
+DOMAIN-SUFFIX,segmentify.com,REJECT
+DOMAIN-SUFFIX,sentiance.com,REJECT
+DOMAIN-SUFFIX,serverbid.com,REJECT
+DOMAIN-SUFFIX,sessionm.com,REJECT
+DOMAIN-SUFFIX,smartlook.com,REJECT
+DOMAIN-SUFFIX,socdm.com,REJECT
+DOMAIN-SUFFIX,socialannex.com,REJECT
+DOMAIN-SUFFIX,socialbakers.com,REJECT
+DOMAIN-SUFFIX,sociaplus.com,REJECT
+DOMAIN-SUFFIX,stathat.com,REJECT
+DOMAIN-SUFFIX,stats-locations.com,REJECT
+DOMAIN-SUFFIX,tagcommander.com,REJECT
+DOMAIN-SUFFIX,tailtarget.com,REJECT
+DOMAIN-SUFFIX,tapad.com,REJECT
+DOMAIN-SUFFIX,tapfiliate.com,REJECT
+DOMAIN-SUFFIX,tapinfluence.com,REJECT
+DOMAIN-SUFFIX,tapstream.com,REJECT
+DOMAIN-SUFFIX,tend.io,REJECT
+DOMAIN-SUFFIX,trackingio.com,REJECT
+DOMAIN-SUFFIX,woopra.com,REJECT
+DOMAIN-SUFFIX,wootric.com,REJECT
+DOMAIN-SUFFIX,wowanalytics.co.uk,REJECT
+DOMAIN-SUFFIX,zoomanalytics.co,REJECT
+
+# 阻止已知的分析和指纹收集服务
+DOMAIN-KEYWORD,analytics,REJECT
+DOMAIN-KEYWORD,fingerprint,REJECT
+DOMAIN-KEYWORD,tracking,REJECT
+
+[Script]
+# 移除网页中的跟踪代码
+移除跟踪代码 = type=http-response,pattern=^https?:\/\/.*,requires-body=1,max-size=1048576,script-path=https://raw.githubusercontent.com/example/remove-trackers.js,script-update-interval=0
+
+# 修改浏览器指纹信息
+修改浏览器指纹 = type=http-response,pattern=^https?:\/\/.*,requires-body=1,max-size=1048576,script-path=https://raw.githubusercontent.com/example/modify-fingerprint.js,script-update-interval=0
+
+# 阻止Canvas指纹采集
+阻止Canvas指纹 = type=http-response,pattern=^https?:\/\/.*,requires-body=1,max-size=1048576,script-path=https://raw.githubusercontent.com/example/block-canvas-fingerprint.js,script-update-interval=0
+
+# 防止WebRTC泄露
+防止WebRTC泄露 = type=http-response,pattern=^https?:\/\/.*,requires-body=1,max-size=1048576,script-path=https://raw.githubusercontent.com/example/prevent-webrtc-leak.js,script-update-interval=0
+
+[URL Rewrite]
+# 重写或阻止跟踪参数
+^https?:\/\/.*(\?|&)utm_source=[^&]* - reject
+^https?:\/\/.*(\?|&)utm_medium=[^&]* - reject
+^https?:\/\/.*(\?|&)utm_campaign=[^&]* - reject
+^https?:\/\/.*(\?|&)utm_content=[^&]* - reject
+^https?:\/\/.*(\?|&)utm_term=[^&]* - reject
+^https?:\/\/.*(\?|&)fbclid=[^&]* - reject
+^https?:\/\/.*(\?|&)gclid=[^&]* - reject
+^https?:\/\/.*(\?|&)ocid=[^&]* - reject
+^https?:\/\/.*(\?|&)ref=[^&]* - reject
+^https?:\/\/.*(\?|&)mc_[a-z]+=[^&]* - reject
+^https?:\/\/.*(\?|&)fb_action_ids=[^&]* - reject
+^https?:\/\/.*(\?|&)fb_action_types=[^&]* - reject
+^https?:\/\/.*(\?|&)fb_source=[^&]* - reject
+^https?:\/\/.*(\?|&)action_object_map=[^&]* - reject
+^https?:\/\/.*(\?|&)action_type_map=[^&]* - reject
+^https?:\/\/.*(\?|&)action_ref_map=[^&]* - reject
+
+# 清理URL中的用户标识符
+^https?:\/\/.*(\?|&)_ga=[^&]* - reject
+^https?:\/\/.*(\?|&)_gl=[^&]* - reject
+^https?:\/\/.*(\?|&)_gac=[^&]* - reject
+^https?:\/\/.*(\?|&)_gat=[^&]* - reject
+^https?:\/\/.*(\?|&)_fbp=[^&]* - reject
+^https?:\/\/.*(\?|&)_fbc=[^&]* - reject
+^https?:\/\/.*(\?|&)yclid=[^&]* - reject
+^https?:\/\/.*(\?|&)_ym_uid=[^&]* - reject
+^https?:\/\/.*(\?|&)_ym_d=[^&]* - reject
+
+[MITM]
+hostname = %APPEND% *
